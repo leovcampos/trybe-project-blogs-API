@@ -7,13 +7,13 @@ const loginUser = async (email, password) => {
     if (!user || user.password !== password) {
         return {
             statusCode: 400,
-            message: 'Invalid fields',
+            message: { message: 'Invalid fields' },
         };
     }
 
     return {
         statusCode: 200,
-        message: generateToken(user.id),
+        message: { token: generateToken(user.id) },
     };
 };
 
