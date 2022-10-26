@@ -25,7 +25,7 @@ const newUser = async ({ displayName, email, password, image }) => {
         displayName,
         email,
         password,
-        image,
+        image: image || '',
     });
 
     return {
