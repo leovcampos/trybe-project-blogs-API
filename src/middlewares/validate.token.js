@@ -11,9 +11,9 @@ const testToken = async (req, res, next) => {
     const { statusCode, message } = await userServices.getById(userId);
 
     if (statusCode !== 200) {
-        return res.status(statusCode).json(message);
+        return res.status(statusCode).json({ message: 'Expired or invalid token' });
     }
-
+    req.user = message;
     next();
 };
 
