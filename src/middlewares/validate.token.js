@@ -7,13 +7,13 @@ const testToken = async (req, res, next) => {
         return res.status(401).json({ message: 'Token not found' });
     }
 
-    const userId = await validateToken(token);
-    const { statusCode, message } = await userServices.getById(userId);
+    const userId = validateToken(token) || -1;
+    const { statusCode } = await userServices.getById(userId);
 
-    if (statusCode !== 200) {
-        return res.status(statusCode).json({ message: 'Expired or invalid token' });
+    if (statusCode === 404) {
+        return res.status(401).json({ message: 'Expired or invalid token' });
     }
-    req.user = message;
+
     next();
 };
 

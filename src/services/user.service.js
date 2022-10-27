@@ -55,7 +55,6 @@ const getAll = async () => {
     const result = await User.findAll({
         attributes: { exclude: ['password'] },
     });
-    console.log(result);
     
     return {
         statusCode: 200,
