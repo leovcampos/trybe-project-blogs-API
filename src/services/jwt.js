@@ -19,6 +19,17 @@ const generateToken = (userId) => {
       return token;
 };
 
+const validateToken = (token) => {
+    const secret = process.env.JWT_SECRET;
+    try {
+        const { data: { userId } } = jwt.verify(token, secret);
+        return userId;
+    } catch (e) {
+        return false;
+    }
+};
+
 module.exports = {
     generateToken,
+    validateToken,
 };

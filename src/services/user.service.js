@@ -34,7 +34,25 @@ const newUser = async ({ displayName, email, password, image }) => {
     };
 };
 
+const getById = async (id) => {
+    const user = await User.findByPk(id);
+    if (!user) {
+        return {
+            statusCode: 404,
+            message: { message: 'User does not exist' },
+        };
+    }
+
+    delete user.dataValues.password;
+
+    return {
+        statusCode: 200,
+        message: { message: user.dataValues },
+    };
+};
+
 module.exports = {
     newUser,
     getByEmail,
+    getById,
 };
