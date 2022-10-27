@@ -51,8 +51,20 @@ const getById = async (id) => {
     };
 };
 
+const getAll = async () => {
+    const result = await User.findAll({
+        attributes: { excluse: ['password'] },
+    });
+
+    return {
+        statusCode: 200,
+        message: result,
+    };
+};
+
 module.exports = {
     newUser,
     getByEmail,
     getById,
+    getAll,
 };
