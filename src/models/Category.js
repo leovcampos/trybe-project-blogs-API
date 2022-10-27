@@ -1,5 +1,5 @@
 const categoryModel = (sequelize, DataTypes) => {
-    const Category = sequelize.difine('Category', {
+    const Category = sequelize.define('Category', {
         id: {
             allowNull: false,
             type: DataTypes.INTEGER,
