@@ -47,7 +47,7 @@ const getById = async (id) => {
 
     return {
         statusCode: 200,
-        message: { message: user.dataValues },
+        message: user.dataValues,
     };
 };
 
