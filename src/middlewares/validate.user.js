@@ -10,26 +10,26 @@ const isDisplayNameInvalid = (request) => {
 };
 
 const isPasswordInvalid = (request) => {
-    if (request.password.length < 6 && !isDisplayNameInvalid(request)) {
+    if (request.password.length < 6) {
         return {
             statusCode: 400,
             message: { message: '"password" length must be at least 6 characters long' },
         };
     }
 
-    return false;
+    return isDisplayNameInvalid(request);
 };
 
 const validateFields = (request) => {
     const regex = new RegExp(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g);
-    if (!regex.test(request.email) && !isPasswordInvalid(request)) {
+    if (!regex.test(request.email)) {
         return {
             statusCode: 400,
             message: { message: '"email" must be a valid email' },
         };
     }
 
-    return false;
+    return isPasswordInvalid(request);
 };
 
 const validateUser = (req, res, next) => {
