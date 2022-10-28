@@ -11,6 +11,17 @@ const newCategory = async (name) => {
     };
 };
 
+const getAllCategoriesService = async () => {
+    const result = await Category.findAll();
+    const message = result.map(({ dataValues }) => dataValues);
+
+    return {
+        statusCode: 200,
+        message,
+    };
+};
+
 module.exports = {
     newCategory,
+    getAllCategoriesService,
 };
