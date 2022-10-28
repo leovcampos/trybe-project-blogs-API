@@ -8,7 +8,7 @@ const newCategory = async (req, res) => {
 };
 
 const getAllCategories = async (_req, res) => {
-    const { statusCode, message } = await categoryServices.getAllCategoriesService;
+    const { statusCode, message } = await categoryServices.getAllCategoriesService();
 
     res.status(statusCode).json(message);
 };
