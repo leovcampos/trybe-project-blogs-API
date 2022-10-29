@@ -1,26 +1,26 @@
-const { Op } = require('sequelize');
+// const { Op } = require('sequelize');
 const { Category, BlogPost, PostCategory, sequelize, User } = require('../models');
 
-// const validateCategotyId = async (categoryId) => {
-//     const categoriesPromises = categoryId.map((element) =>
-//         Category.findByPk(element));
-//     const resultPromises = await Promise.all(categoriesPromises);
-//     const validateCatId = resultPromises.every((element) => element !== null);
-
-//     return validateCatId;
-// };
-
 const validateCategotyId = async (categoryId) => {
-    const findCategories = await Category.findAll({
-        where: {
-            id: {
-                [Op.or]: categoryId,
-            },
-        },
-    });
+    const categoriesPromises = categoryId.map((element) =>
+        Category.findByPk(element));
+    const resultPromises = await Promise.all(categoriesPromises);
+    const validateCatId = resultPromises.every((element) => element !== null);
 
-    return findCategories.length === categoryId.length;
+    return validateCatId;
 };
+
+// const validateCategotyId = async (categoryId) => {
+//     const findCategories = await Category.findAll({
+//         where: {
+//             id: {
+//                 [Op.or]: categoryId,
+//             },
+//         },
+//     });
+
+//     return findCategories.length === categoryId.length;
+// };
 
 const newPost = async (title, content, categoryIds, userId) => {
     try {
