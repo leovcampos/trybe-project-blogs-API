@@ -1,4 +1,4 @@
-const { Category, BlogPost, PostCategory, User } = require('../models');
+const { Category, BlogPost, PostCategory, sequelize } = require('../models');
 
 const validateCategotyId = async (categoryId) => {
     const categoriesPromises = categoryId.map((element) =>
@@ -10,7 +10,22 @@ const validateCategotyId = async (categoryId) => {
 };
 
 const newPost = async (title, content, categoryIds, userId) => {
-    
+    try {
+        const result = await sequelize.transaction(async (element) => {
+            const { dataValues } = await BlogPost.create(
+                { title, content, userId },
+                { transaction: element },
+            );
+            await Promise.all(categoryIds.map(async (categoryId) => {
+                await PostCategory.create({ postId: dataValues.id, categoryId },
+                    { transaction: element });
+            }));
+            return dataValues;
+        });
+        return { satusCode: 201, message: result };
+    } catch (e) {
+        return { statusCode: 404, message: e.message };
+    }
 };
 
 const newPostService = async ({ title, content, categoryIds }, { id: userId }) => {
@@ -22,7 +37,8 @@ const newPostService = async ({ title, content, categoryIds }, { id: userId }) =
         };
     }
 
-    const response = await newPost();
+    const response = await newPost(title, content, categoryIds, userId);
+    return response;
 };
 
 module.exports = {
