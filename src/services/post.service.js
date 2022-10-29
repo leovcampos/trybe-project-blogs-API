@@ -1,12 +1,25 @@
-const { Category, BlogPost, PostCategory, sequelize } = require('../models');
+const { Op } = require('sequelize');
+const { Category, BlogPost, PostCategory, sequelize, User } = require('../models');
+
+// const validateCategotyId = async (categoryId) => {
+//     const categoriesPromises = categoryId.map((element) =>
+//         Category.findByPk(element));
+//     const resultPromises = await Promise.all(categoriesPromises);
+//     const validateCatId = resultPromises.every((element) => element !== null);
+
+//     return validateCatId;
+// };
 
 const validateCategotyId = async (categoryId) => {
-    const categoriesPromises = categoryId.map((element) =>
-        Category.findByPk(element));
-    const resultPromises = await Promise.all(categoriesPromises);
-    const validateCatId = resultPromises.every((element) => element !== null);
+    const findCategories = await Category.findAll({
+        where: {
+            id: {
+                [Op.or]: categoryId,
+            },
+        },
+    });
 
-    return validateCatId;
+    return findCategories.length === categoryId.length;
 };
 
 const newPost = async (title, content, categoryIds, userId) => {
@@ -28,7 +41,7 @@ const newPost = async (title, content, categoryIds, userId) => {
     }
 };
 
-const newPostService = async ({ title, content, categoryIds }, { id: userId }) => {
+const newPostService = async ({ title, content, categoryIds, id }) => {
     const validateCategories = await validateCategotyId(categoryIds);
     if (!validateCategories) {
         return {
@@ -37,10 +50,32 @@ const newPostService = async ({ title, content, categoryIds }, { id: userId }) =
         };
     }
 
-    const response = await newPost(title, content, categoryIds, userId);
+    const response = await newPost(title, content, categoryIds, id);
     return response;
+};
+
+const findAllService = async () => {
+    const result = await BlogPost.findAll({
+        include: [{
+            model: Category,
+            as: 'categories',
+        }, {
+            model: User,
+            as: 'user',
+            attributes: {
+                exclude: ['password'],
+            },
+        },
+    ],
+    });
+
+    return {
+        statusCode: 200,
+        message: result.map(({ dataValues }) => dataValues),
+    };
 };
 
 module.exports = {
     newPostService,
+    findAllService,
 };

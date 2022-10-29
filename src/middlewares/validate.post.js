@@ -1,7 +1,7 @@
 const validatePost = (req, res, next) => {
-    const { title, content, categoryId } = req.body;
+    const { title, content, categoryIds } = req.body;
 
-    if (title && content && categoryId && req.method === 'POST') {
+    if (title && content && categoryIds && req.method === 'POST') {
         return next();
     }
 
