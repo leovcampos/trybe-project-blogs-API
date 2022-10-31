@@ -6,6 +6,6 @@ const postControllers = require('../controllers/post.controller');
 const router = express.Router();
 
 router.post('/', validateToken, validatePost, postControllers.newPost);
-router.get('/', postControllers.findAll);
+router.get('/', validateToken, postControllers.findAll);
 
 module.exports = router;
