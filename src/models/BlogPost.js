@@ -7,9 +7,20 @@ const BlogPostModel = (sequelize, DataTypes) => {
         },
         title: DataTypes.STRING,
         content: DataTypes.STRING,
-        published: DataTypes.DATE,
-        updated: DataTypes.DATE,
-        userId: DataTypes.INTEGER,
+        published: {
+            type: DataTypes.DATE,
+            defaultValue: new Date(),
+            allowNull: false,
+        },
+        updated: {
+            type: DataTypes.DATE,
+            defaultValue: new Date(),
+            allowNull: false,
+        },
+        userId: {
+            type: DataTypes.INTEGER,
+            foreignKey: true,
+        }
     },
         {
             underscored: true,
@@ -20,8 +31,8 @@ const BlogPostModel = (sequelize, DataTypes) => {
 
     BlogPost.associate = (models) => {
         BlogPost.belongsTo(models.User, {
-            foreignKey: "userId",
             as: "user",
+            foreignKey: "user_id",
         });
     }
 

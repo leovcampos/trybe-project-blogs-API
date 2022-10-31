@@ -1,4 +1,3 @@
-// const { Op } = require('sequelize');
 const { Category, BlogPost, PostCategory, sequelize, User } = require('../models');
 
 const validateCategotyId = async (categoryId) => {
@@ -9,18 +8,6 @@ const validateCategotyId = async (categoryId) => {
 
     return validateCatId;
 };
-
-// const validateCategotyId = async (categoryId) => {
-//     const findCategories = await Category.findAll({
-//         where: {
-//             id: {
-//                 [Op.or]: categoryId,
-//             },
-//         },
-//     });
-
-//     return findCategories.length === categoryId.length;
-// };
 
 const newPost = async (title, content, categoryIds, userId) => {
     try {
@@ -69,6 +56,7 @@ const findAllService = async () => {
     ],
     });
 
+    console.log(result);
     return {
         statusCode: 200,
         message: result.map(({ dataValues }) => dataValues),
