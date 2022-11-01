@@ -1,12 +1,15 @@
+const { Op } = require('sequelize');
 const { Category, BlogPost, PostCategory, sequelize, User } = require('../models');
 
-const validateCategotyId = async (categoryId) => {
-    const categoriesPromises = categoryId.map((element) =>
-        Category.findByPk(element));
-    const resultPromises = await Promise.all(categoriesPromises);
-    const validateCatId = resultPromises.every((element) => element !== null);
+const validateCategotyId = async (categoryIds) => {
+    const getCategories = await Category.findAll({
+        where: {
+            id: { [Op.or]: categoryIds },
+        },
+    });
+    console.log(getCategories.length);
 
-    return validateCatId;
+    return getCategories.length === categoryIds.length;
 };
 
 const newPost = async (title, content, categoryIds, userId) => {
@@ -28,7 +31,7 @@ const newPost = async (title, content, categoryIds, userId) => {
     }
 };
 
-const newPostService = async ({ title, content, categoryIds, id }) => {
+const newPostService = async ({ title, content, categoryIds }, { id: userId }) => {
     const validateCategories = await validateCategotyId(categoryIds);
     if (!validateCategories) {
         return {
@@ -37,7 +40,7 @@ const newPostService = async ({ title, content, categoryIds, id }) => {
         };
     }
 
-    const response = await newPost(title, content, categoryIds, id);
+    const response = await newPost(title, content, categoryIds, userId);
     return response;
 };
 
@@ -53,17 +56,39 @@ const findAllService = async () => {
                 exclude: ['password'],
             },
         },
-    ],
+        ],
     });
 
-    console.log(result);
     return {
         statusCode: 200,
         message: result.map(({ dataValues }) => dataValues),
     };
 };
 
+const getByIdService = async (id) => {
+    const [post] = await BlogPost.findAll({
+        where: { id },
+        include: [{ model: Category, as: 'categories' },
+        { model: User, as: 'user', attributes: { exclude: ['password'] } }],
+    });
+
+    if (!post) {
+        return {
+            statusCode: 404,
+            message: {
+                message: 'Post does not exist',
+            },
+        };
+    }
+
+    return {
+        statusCode: 200,
+        message: post,
+    };
+};
+
 module.exports = {
     newPostService,
     findAllService,
+    getByIdService,
 };
