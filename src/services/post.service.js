@@ -24,7 +24,7 @@ const newPost = async (title, content, categoryIds, userId) => {
             }));
             return dataValues;
         });
-        return { satusCode: 201, message: result };
+        return { statusCode: 201, message: result };
     } catch (e) {
         return { statusCode: 404, message: e.message };
     }
