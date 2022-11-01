@@ -7,7 +7,6 @@ const validateCategotyId = async (categoryIds) => {
             id: { [Op.or]: categoryIds },
         },
     });
-    console.log(getCategories.length);
 
     return getCategories.length === categoryIds.length;
 };
