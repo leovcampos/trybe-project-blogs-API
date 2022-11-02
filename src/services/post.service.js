@@ -39,8 +39,8 @@ const newPostService = async ({ title, content, categoryIds }, { id: userId }) =
         };
     }
 
-    const response = await newPost(title, content, categoryIds, userId);
-    return response;
+    const result = await newPost(title, content, categoryIds, userId);
+    return result;
 };
 
 const findAllService = async () => {

@@ -62,9 +62,23 @@ const getAll = async () => {
     };
 };
 
+const deleteUser = async (id) => {
+    await User.destroy({
+        where: {
+            id,
+        },
+    });
+
+    return {
+        statusCode: 204,
+        message: { message: 'User deleted' },
+    };
+};
+
 module.exports = {
     newUser,
     getByEmail,
     getById,
     getAll,
+    deleteUser,
 };
