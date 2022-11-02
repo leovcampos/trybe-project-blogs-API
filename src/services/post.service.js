@@ -25,8 +25,8 @@ const newPost = async (title, content, categoryIds, userId) => {
             return dataValues;
         });
         return { statusCode: 201, message: result };
-    } catch (e) {
-        return { statusCode: 404, message: e.message };
+    } catch (error) {
+        return { statusCode: 404, message: error.message };
     }
 };
 
