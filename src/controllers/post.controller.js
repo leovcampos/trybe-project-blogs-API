@@ -2,7 +2,7 @@ const postServices = require('../services/post.service');
 
 const newPost = async (req, res) => {
     const { statusCode, message } = await postServices.newPostService(req.body, req.user);
-    
+    console.log(statusCode);
     res.status(statusCode).json(message);
 };
 
