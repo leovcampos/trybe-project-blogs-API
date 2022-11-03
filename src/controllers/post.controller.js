@@ -6,9 +6,9 @@ const postServices = require('../services/post.service');
 //     res.status(statusCode).json(message);
 // };
 
-const findAll = async (_req, res) => {
+const findAll = async (req, res) => {
     const { statusCode, message } = await postServices.findAllService();
-
+    console.log(req.user);
     res.status(statusCode).json(message);
 };
 

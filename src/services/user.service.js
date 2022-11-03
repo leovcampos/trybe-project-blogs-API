@@ -58,7 +58,12 @@ const getAll = async () => {
     
     return {
         statusCode: 200,
-        message: result,
+        message: result.map(({ dataValues }) => {
+            const user = dataValues;
+            delete user.password;
+
+            return user;
+        }),
     };
 };
 
