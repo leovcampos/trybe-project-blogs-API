@@ -18,6 +18,14 @@ const getById = async (req, res) => {
     res.status(statusCode).json(message);
 };
 
+const deletePost = async (req, res) => {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+    const { statusCode, message } = await postServices.deletePostService(id, userId);
+
+    res.status(statusCode).json(message);
+};
+
 const updatePost = async (req, res) => {
     const { id } = req.params;
     const { id: userId } = req.user;
@@ -31,4 +39,5 @@ module.exports = {
     findAll,
     getById,
     updatePost,
+    deletePost,
 };

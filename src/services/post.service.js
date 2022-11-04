@@ -86,12 +86,23 @@ const getByIdService = async (id) => {
     };
 };
 
+const deletePostService = async (idP, userId) => {
+    const result = await getByIdService(idP);
+    if (result.statusCode === 404) return result;
+
+    const { user: { id } } = result.message;
+    if (id === userId) {
+        await BlogPost.destroy({ where: { id: idP } });
+        return { statusCode: 204, message: result.message };
+    }
+
+    return { statusCode: 401, message: { message: 'Unauthorized user' } };
+};
+
 const updatePostService = async (idP, userId, { title, content }) => {
     const result = await getByIdService(idP);
 
-    if (result.statusCode === 404) {
-        return result;
-    }
+    if (result.statusCode === 404) return result;
 
     const { user: { id } } = result.message;
     if (id === userId) {
@@ -113,4 +124,5 @@ module.exports = {
     findAllService,
     getByIdService,
     updatePostService,
+    deletePostService,
 };
