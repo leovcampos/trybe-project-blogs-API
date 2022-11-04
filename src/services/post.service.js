@@ -86,8 +86,31 @@ const getByIdService = async (id) => {
     };
 };
 
+const updatePostService = async (idP, userId, { title, content }) => {
+    const result = await getByIdService(idP);
+
+    if (result.statusCode === 404) {
+        return result;
+    }
+
+    const { user: { id } } = result.message;
+    if (id === userId) {
+        await BlogPost.update(
+            { title, content },
+            { where: { id: idP } },
+        );
+        return getByIdService(idP);
+    }
+
+    return {
+        statusCode: 401,
+        message: { message: 'Unauthorized user' },
+    };
+};
+
 module.exports = {
     newPostService,
     findAllService,
     getByIdService,
+    updatePostService,
 };
