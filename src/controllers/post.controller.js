@@ -34,10 +34,18 @@ const updatePost = async (req, res) => {
     res.status(statusCode).json(message);
 };
 
+const getByQuery = async (req, res) => {
+    const { q } = req.query;
+    const { statusCode, message } = await postServices.getByQueryService(q);
+
+    res.status(statusCode).json(message);
+};
+
 module.exports = {
     newPost,
     findAll,
     getById,
     updatePost,
     deletePost,
+    getByQuery,
 };

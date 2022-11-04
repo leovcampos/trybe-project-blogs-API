@@ -119,10 +119,33 @@ const updatePostService = async (idP, userId, { title, content }) => {
     };
 };
 
+const getByQueryService = async (request) => {
+    const queries = {
+        include: [
+          { model: Category, as: 'categories', through: { attributes: [] } },
+          { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        ],
+      };
+        const postByQuery = await BlogPost.findAll({
+            where: { [Op.or]: [
+                    { title: { [Op.like]: `%${request}%` } },
+                    { content: { [Op.like]: `%${request}%` } },
+                ],
+            },
+            ...queries,
+        });
+
+        return {
+            statusCode: 200,
+            message: postByQuery,
+        };
+};
+
 module.exports = {
     newPostService,
     findAllService,
     getByIdService,
     updatePostService,
     deletePostService,
+    getByQueryService,
 };
