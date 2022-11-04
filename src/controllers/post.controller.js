@@ -7,7 +7,6 @@ const newPost = async (req, res) => {
 
 const findAll = async (req, res) => {
     const { statusCode, message } = await postServices.findAllService();
-    console.log(req.user);
     res.status(statusCode).json(message);
 };
 

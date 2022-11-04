@@ -8,4 +8,14 @@ const validatePost = (req, res, next) => {
     return res.status(400).json({ message: 'Some required fields are missing' });
 };
 
-module.exports = validatePost;
+const validatePut = (req, res, next) => {
+    const { title, content } = req.body;
+
+    if (title && content && req.method === 'PUT') {
+        return next();
+    }
+
+    return res.status(400).json({ message: 'Some required fields are missing' });
+};
+
+module.exports = { validatePost, validatePut };
