@@ -121,7 +121,7 @@ const updatePostService = async (idP, userId, { title, content }) => {
 
 const getByQueryService = async (request) => {
     const queries = { include: [
-            { model: Category, as: 'categories', through: { attributes: [] } },
+            { model: Category, as: 'categories' },
             { model: User, as: 'user', attributes: { exclude: ['password'] } },
         ],
     };
@@ -135,11 +135,11 @@ const getByQueryService = async (request) => {
             },
             ...queries,
         });
-    
+
         return { statusCode: 200, message: postByQuery };
     }
 
-    return { statusCode: 401, message: { message: 'Unauthorized user' } };
+    return BlogPost.findAll();
 };
 
 module.exports = {
