@@ -8,12 +8,14 @@ const testToken = async (req, res, next) => {
     }
 
     const userId = validateToken(token) || -1;
-    const { statusCode } = await userServices.getById(userId);
+    const { statusCode, message } = await userServices.getById(userId);
 
     if (statusCode === 404) {
         return res.status(401).json({ message: 'Expired or invalid token' });
     }
 
+    req.user = message;
+    
     next();
 };
 
