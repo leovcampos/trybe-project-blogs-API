@@ -139,7 +139,7 @@ const getByQueryService = async (request) => {
         return { statusCode: 200, message: postByQuery };
     }
 
-    return BlogPost.findAll();
+    return BlogPost.findAll({ ...queries });
 };
 
 module.exports = {
