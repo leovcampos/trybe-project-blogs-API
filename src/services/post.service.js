@@ -128,18 +128,16 @@ const getByQueryService = async (request) => {
     if (request) {
         const postByQuery = await BlogPost.findAll({
             where: {
-                [Op.or]: [
-                    { title: { [Op.like]: `%${request}%` } },
+                [Op.or]: [{ title: { [Op.like]: `%${request}%` } },
                     { content: { [Op.like]: `%${request}%` } },
                 ],
             },
             ...queries,
         });
-
         return { statusCode: 200, message: postByQuery };
     }
-
-    return BlogPost.findAll({ ...queries });
+    const allPosts = await BlogPost.findAll({ ...queries });
+    return { statusCode: 200, message: allPosts };
 };
 
 module.exports = {
